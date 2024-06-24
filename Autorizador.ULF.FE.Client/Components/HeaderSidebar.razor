@@ -3,15 +3,21 @@
 
 <MudThemeProvider @rendermode="InteractiveServer" @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
 
-<MudAppBar>
+<MudAppBar Style="@($"color:{UnimedLFTheme.Palette.White}; background:{Colors.Teal.Darken4};")">
     <MudIconButton Class="ms-2" Icon="@MenuIcon" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+    <MudText Typo="Typo.h5">
+        <MudIcon Icon="@Icons.Material.Filled.Adjust" Size="Size.Large" />
+        Autorizador Snipper
+    </MudText>
     <MudSpacer />
-    <MudText Typo="Typo.h5">Autorizador Snipper</MudText>
     <MudSpacer />
     <MudIconButton Color="Color.Inherit" Icon="@DarkModeIcon" OnClick="ButtonDarkModeClick" />
 </MudAppBar>
 <MudDrawer @bind-Open="@_drawerOpen">
     <MudNavMenu>
+        <MudText Typo="Typo.h6" Class="px-4">Autorizador Snipper</MudText>
+        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Motor de regras</MudText>
+        <MudDivider Class="my-2" />
         <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
         <MudNavLink Href="counter" Match="NavLinkMatch.Prefix">Client Version -- Works</MudNavLink>
     </MudNavMenu>
@@ -28,7 +34,7 @@
 
     private MudTheme _theme = new();
 
-
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -48,7 +54,7 @@
         }
     }
 
-    private MudTheme MyCustomTheme = new MudTheme()
+    private MudTheme UnimedLFTheme = new MudTheme()
         {
             Palette = new Palette()
             {
