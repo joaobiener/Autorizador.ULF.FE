@@ -1,0 +1,97 @@
+﻿@inject IJSRuntime JSRuntime
+@rendermode InteractiveAuto
+
+<MudThemeProvider @rendermode="InteractiveServer" @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+
+<MudAppBar>
+    <MudIconButton Class="ms-2" Icon="@MenuIcon" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+    <MudSpacer />
+    <MudText Typo="Typo.h5">Autorizador Snipper</MudText>
+    <MudSpacer />
+    <MudIconButton Color="Color.Inherit" Icon="@DarkModeIcon" OnClick="ButtonDarkModeClick" />
+</MudAppBar>
+<MudDrawer @bind-Open="@_drawerOpen">
+    <MudNavMenu>
+        <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+        <MudNavLink Href="counter" Match="NavLinkMatch.Prefix">Client Version -- Works</MudNavLink>
+    </MudNavMenu>
+</MudDrawer>
+
+@code
+{
+    
+    bool _isDarkMode = true;
+    string DarkModeIcon = Icons.Material.Filled.WbSunny;
+    
+    bool _drawerOpen = false;
+    string MenuIcon = @Icons.Material.Filled.Menu;
+
+    private MudTheme _theme = new();
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            
+
+            _isDarkMode = await JSRuntime.InvokeAsync<bool>("getDarkModePreference");
+            if (_isDarkMode)
+            {
+                DarkModeIcon = Icons.Material.Filled.DarkMode;
+            }
+            else
+            {
+                DarkModeIcon = Icons.Material.Filled.WbSunny;
+            }
+            StateHasChanged();
+        }
+    }
+
+    private MudTheme MyCustomTheme = new MudTheme()
+        {
+            Palette = new Palette()
+            {
+                Primary = Colors.Green.Darken4,
+                Secondary = Colors.Green.Accent4,
+                AppbarBackground = Colors.Red.Default,
+            },
+            PaletteDark = new Palette()
+            {
+                Primary = Colors.Green.Darken4
+            },
+
+            LayoutProperties = new LayoutProperties()
+            {
+                DrawerWidthLeft = "260px",
+                DrawerWidthRight = "300px"
+            }
+        };
+
+
+
+    void DrawerToggle()
+    {
+
+
+        _drawerOpen = !_drawerOpen;
+        MenuIcon = _drawerOpen ? @Icons.Material.Filled.MenuOpen : @Icons.Material.Filled.Menu;
+    }
+
+    void ButtonDarkModeClick()
+    {
+        _isDarkMode = !_isDarkMode;
+        if (_isDarkMode)
+        {
+            DarkModeIcon = Icons.Material.Filled.DarkMode;
+
+
+        }
+        else
+        {
+            DarkModeIcon = Icons.Material.Filled.WbSunny;
+
+        }
+    }
+
+}
